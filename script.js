@@ -20,12 +20,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 词库
     const wordPairs = [
-        { civilian: "苹果", undercover: "香蕉" },
-        { civilian: "牛奶", undercover: "豆浆" },
-        { civilian: "牙刷", undercover: "梳子" },
-        { civilian: "饺子", undercover: "包子" },
-        { civilian: "键盘", undercover: "鼠标" },
-        { civilian: "太阳", undercover: "月亮" }
+    { civilian: "铅笔", undercover: "钢笔" },
+    { civilian: "橡皮", undercover: "修正液" },
+    { civilian: "书包", undercover: "手提袋" },
+    { civilian: "尺子", undercover: "三角板" },
+    { civilian: "课本", undercover: "练习册" },
+    { civilian: "文具盒", undercover: "笔袋" },
+    { civilian: "水杯", undercover: "水壶" },
+    { civilian: "毛巾", undercover: "手帕" },
+    { civilian: "筷子", undercover: "勺子" },
+    { civilian: "书包", undercover: "背包" },
+    { civilian: "彩笔", undercover: "蜡笔" },
+    { civilian: "课桌", undercover: "椅子" },
+    { civilian: "跳绳", undercover: "毽子" },
+    { civilian: "橡皮擦", undercover: "涂改带" },
+    { civilian: "运动鞋", undercover: "皮鞋" },
+    { civilian: "笔记本", undercover: "日记本" },
+    { civilian: "铅笔刀", undercover: "削笔机" },
+    { civilian: "红领巾", undercover: "队徽" },
+    { civilian: "雨伞", undercover: "雨衣" },
+    { civilian: "闹钟", undercover: "手表" }
     ];
 
     // 游戏状态变量
@@ -144,4 +158,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 初始加载时，显示主界面
     showScreen('setup');
+
 });

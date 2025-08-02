@@ -1,12 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 获取所有需要的DOM元素
+    // Get all necessary DOM elements
     const screens = {
         setup: document.getElementById('setup-section'),
         cards: document.getElementById('cards-section'),
         vote: document.getElementById('vote-section'),
         result: document.getElementById('result-section')
     };
-
+    
     const startBtn = document.getElementById('start-btn');
     const playerTurnText = document.getElementById('player-turn');
     const cardElement = document.querySelector('.card');
@@ -18,21 +18,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const finalCardsContainer = document.getElementById('final-cards');
     const restartBtn = document.getElementById('restart-btn');
 
-    // 词库
+    // ENGLISH Word Bank
     const wordPairs = [
-        { civilian: "苹果", undercover: "香蕉" },
-        { civilian: "牛奶", undercover: "豆浆" },
-        { civilian: "牙刷", undercover: "梳子" },
-        { civilian: "饺子", undercover: "包子" },
-        { civilian: "键盘", undercover: "鼠标" },
-        { civilian: "太阳", undercover: "月亮" }
+        { civilian: "Apple", undercover: "Orange" },
+        { civilian: "Coffee", undercover: "Tea" },
+        { civilian: "Laptop", undercover: "Tablet" },
+        { civilian: "Chair", undercover: "Sofa" },
+        { civilian: "River", undercover: "Ocean" },
+        { civilian: "Dog", undercover: "Cat" },
+        { civilian: "Book", undercover: "Magazine" },
+        { civilian: "Guitar", undercover: "Violin" }
     ];
 
-    // 游戏状态变量
+    // Game state variables
     let players;
     let currentPlayer;
 
-    // ⭐ 核心函数：切换显示的界面
+    // Core function: Switch screens
     function showScreen(screenName) {
         for (let key in screens) {
             screens[key].classList.add('hidden');
@@ -40,108 +42,100 @@ document.addEventListener('DOMContentLoaded', () => {
         screens[screenName].classList.remove('hidden');
     }
 
-    // ⭐ 核心函数：开始新游戏
+    // Core function: Start a new game
     function startGame() {
-        // 1. 初始化游戏状态
         players = [];
         currentPlayer = 1;
-
-        // 2. 随机选择词组并分配角色
+        
         const wordPair = wordPairs[Math.floor(Math.random() * wordPairs.length)];
         const undercoverIndex = Math.floor(Math.random() * 3);
-
+        
         for (let i = 0; i < 3; i++) {
             const isUndercover = (i === undercoverIndex);
             players.push({
                 id: i + 1,
                 word: isUndercover ? wordPair.undercover : wordPair.civilian,
-                role: isUndercover ? '卧底' : '平民'
+                role: isUndercover ? 'Undercover' : 'Civilian'
             });
         }
+        
+        console.log("This round's cards:", players);
 
-        console.log("本局底牌:", players); // 测试用，保留
-
-        // 3. 重置并准备UI
         cardElement.classList.remove('is-flipped');
         killerSelect.value = '';
         prepareTurn();
         showScreen('cards');
     }
-
-    // ⭐ 核心函数：为当前玩家准备回合
+    
+    // Core function: Prepare the UI for the current player's turn
     function prepareTurn() {
         const player = players[currentPlayer - 1];
-        playerTurnText.textContent = `请 ${player.id} 号玩家查看身份`;
-
-        // ⭐ UI修改核心：去掉“你的身份是”，UI更简洁
+        playerTurnText.textContent = `Player ${player.id}, view your card`;
+        
         cardBack.innerHTML = `
             <h2>${player.role}</h2>
             <h1>${player.word}</h1>
         `;
-
-        // 更新按钮文字
-        nextPlayerBtn.textContent = (currentPlayer === 3) ? '查看完毕，开始讨论' : '查看完毕，传给下一位';
-        nextPlayerBtn.disabled = true; // 必须先翻牌才能点击
+        
+        nextPlayerBtn.textContent = (currentPlayer === 3) ? 'Done Viewing, Start Discussion' : 'Done Viewing, Pass to Next Player';
+        nextPlayerBtn.disabled = true;
     }
-
-    // 翻牌
+    
+    // Flip the card
     function flipCard() {
         if (!cardElement.classList.contains('is-flipped')) {
             cardElement.classList.add('is-flipped');
-            nextPlayerBtn.disabled = false; // 翻牌后才能点击按钮
+            nextPlayerBtn.disabled = false;
         }
     }
 
-    // ⭐ BUG修复核心：重构后的下一位玩家逻辑
+    // Handle the logic for the next player
     function handleNextPlayer() {
         nextPlayerBtn.disabled = true;
         cardElement.classList.remove('is-flipped');
 
-        // 等待卡牌翻转动画结束
         setTimeout(() => {
             if (currentPlayer < 3) {
-                // 如果不是最后一位玩家
                 currentPlayer++;
                 prepareTurn();
             } else {
-                // 如果是最后一位玩家，进入投票环节
                 showScreen('vote');
             }
-        }, 800); // 必须等待动画播放完
+        }, 800);
     }
 
-    // 揭晓结果
+    // Reveal the final result
     function revealResult() {
         const votedPlayerId = parseInt(killerSelect.value);
         if (!votedPlayerId) {
-            alert('请选择一个玩家！');
+            alert('Please select a player!');
             return;
         }
 
-        const undercover = players.find(p => p.role === '卧底');
-        resultMessage.textContent = (votedPlayerId === undercover.id) ? '平民胜利！卧底已被揪出！' : '卧底胜利！很遗憾，抓错人了。';
-
+        const undercover = players.find(p => p.role === 'Undercover');
+        resultMessage.textContent = (votedPlayerId === undercover.id) ? 'Civilians Win! The Undercover has been found!' : 'Undercover Wins! You caught the wrong person.';
+        
         finalCardsContainer.innerHTML = '';
         players.forEach(player => {
             const cardDiv = document.createElement('div');
             cardDiv.classList.add('final-card');
-            if (player.role === '卧底') {
+            if (player.role === 'Undercover') {
                 cardDiv.classList.add('undercover');
             }
-            cardDiv.innerHTML = `<strong>${player.id}号: ${player.role}</strong> (${player.word})`;
+            cardDiv.innerHTML = `<strong>Player ${player.id}: ${player.role}</strong> (${player.word})`;
             finalCardsContainer.appendChild(cardDiv);
         });
 
         showScreen('result');
     }
 
-    // 事件监听
+    // Event Listeners
     startBtn.addEventListener('click', startGame);
     cardElement.addEventListener('click', flipCard);
     nextPlayerBtn.addEventListener('click', handleNextPlayer);
     revealBtn.addEventListener('click', revealResult);
-    restartBtn.addEventListener('click', () => showScreen('setup')); // 返回主菜单
+    restartBtn.addEventListener('click', () => showScreen('setup'));
 
-    // 初始加载时，显示主界面
+    // Show the main menu on initial load
     showScreen('setup');
 });

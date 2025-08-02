@@ -1,58 +1,57 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- 关键：为手机屏幕优化的视口设置 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>谁是卧底</title>
+    <title>Who is the Undercover?</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div id="game-container">
-        <!-- 欢迎/开始 界面 -->
+        <!-- Welcome Screen -->
         <div id="setup-section" class="screen">
-            <h1>谁是卧底</h1>
-            <p class="subtitle">3人版</p>
-            <button id="start-btn" class="primary-btn">开始游戏</button>
+            <h1>Who is the Undercover?</h1>
+            <p class="subtitle">3-Player Edition</p>
+            <button id="start-btn" class="primary-btn">Start Game</button>
         </div>
 
-        <!-- 查看身份 界面 -->
+        <!-- Card Viewing Screen -->
         <div id="cards-section" class="screen hidden">
-            <p id="player-turn" class="turn-indicator">请 1 号玩家查看身份</p>
+            <p id="player-turn" class="turn-indicator">Player 1, view your card</p>
             <div class="card-container">
                 <div class="card">
                     <div class="card-front">
-                        <p>点击查看身份</p>
+                        <p>Tap to Reveal</p>
                     </div>
                     <div class="card-back">
-                        <!-- JS会填充内容 -->
+                        <!-- JS will fill this -->
                     </div>
                 </div>
             </div>
-            <button id="next-player-btn" class="secondary-btn" disabled>查看完毕</button>
+            <button id="next-player-btn" class="secondary-btn" disabled>Done Viewing</button>
         </div>
 
-        <!-- 投票讨论 界面 -->
+        <!-- Voting Screen -->
         <div id="vote-section" class="screen hidden">
-            <h2>请开始讨论</h2>
-            <p class="instruction">讨论结束后，投票选出卧底</p>
+            <h2>Start Discussion</h2>
+            <p class="instruction">After discussion, vote for the undercover agent.</p>
             <select id="killer-select">
-                <option value="">-- 请选择玩家 --</option>
-                <option value="1">1 号玩家</option>
-                <option value="2">2 号玩家</option>
-                <option value="3">3 号玩家</option>
+                <option value="">-- Select a Player --</option>
+                <option value="1">Player 1</option>
+                <option value="2">Player 2</option>
+                <option value="3">Player 3</option>
             </select>
-            <button id="reveal-btn" class="primary-btn">确认凶手并亮牌</button>
+            <button id="reveal-btn" class="primary-btn">Confirm Vote & Reveal Cards</button>
         </div>
 
-        <!-- 结果展示 界面 -->
+        <!-- Result Screen -->
         <div id="result-section" class="screen hidden">
             <h2 id="result-message"></h2>
             <div id="final-cards">
-                <!-- JS会填充最终牌面 -->
+                <!-- JS will fill the final cards -->
             </div>
-            <button id="restart-btn" class="primary-btn">返回主菜单</button>
+            <button id="restart-btn" class="primary-btn">Back to Main Menu</button>
         </div>
     </div>
 

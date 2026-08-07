@@ -2,59 +2,147 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <!-- 关键：为手机屏幕优化的视口设置 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>谁是卧底</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <meta name="theme-color" content="#f7f3ea">
+    <meta name="description" content="三人谁是卧底发牌器">
+    <title>谁是卧底 · 三人发牌器</title>
+    <link rel="icon" href="assets/card-mark.svg" type="image/svg+xml">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <main id="game-container">
+        <header class="app-header">
+            <div class="brand-mark" aria-hidden="true">
+                <span></span>
+                <span></span>
+            </div>
+            <div>
+                <p class="brand-name">谁是卧底</p>
+                <p class="brand-meta">三人局 · 一轮定胜负</p>
+            </div>
+        </header>
 
-    <div id="game-container">
-        <!-- 欢迎/开始 界面 -->
-        <div id="setup-section" class="screen">
-            <h1>谁是卧底</h1>
-            <p class="subtitle">3人版</p>
-            <button id="start-btn" class="primary-btn">开始游戏</button>
-        </div>
+        <section id="setup-section" class="screen setup-screen" aria-labelledby="setup-title">
+            <div class="intro">
+                <p class="eyebrow">准备开局</p>
+                <h1 id="setup-title">选一个词库<br>马上发牌</h1>
+            </div>
 
-        <!-- 查看身份 界面 -->
-        <div id="cards-section" class="screen hidden">
-            <p id="player-turn" class="turn-indicator">请 1 号玩家查看身份</p>
-            <div class="card-container">
-                <div class="card">
-                    <div class="card-front">
-                        <p>点击查看身份</p>
+            <div class="setup-controls">
+                <div class="field-group">
+                    <span class="field-label">抽取方式</span>
+                    <div class="segmented-control" role="group" aria-label="抽取方式">
+                        <button class="segment is-selected" type="button" data-mode="all" aria-pressed="true">综合随机</button>
+                        <button class="segment" type="button" data-mode="category" aria-pressed="false">按分类</button>
                     </div>
-                    <div class="card-back">
-                        <!-- JS会填充内容 -->
+                </div>
+
+                <div id="category-panel" class="field-group category-panel" hidden>
+                    <span class="field-label">词库分类</span>
+                    <div id="category-options" class="category-grid" role="group" aria-label="词库分类">
+                        <button class="category-option is-selected" type="button" data-category="animation" aria-pressed="true">
+                            <span class="category-icon" aria-hidden="true">TV</span>
+                            <span>动画</span>
+                        </button>
+                        <button class="category-option" type="button" data-category="campus" aria-pressed="false">
+                            <span class="category-icon" aria-hidden="true">A+</span>
+                            <span>校园</span>
+                        </button>
+                        <button class="category-option" type="button" data-category="life" aria-pressed="false">
+                            <span class="category-icon" aria-hidden="true">HOME</span>
+                            <span>生活</span>
+                        </button>
+                        <button class="category-option" type="button" data-category="nature" aria-pressed="false">
+                            <span class="category-icon" aria-hidden="true">ECO</span>
+                            <span>自然</span>
+                        </button>
+                        <button class="category-option" type="button" data-category="food" aria-pressed="false">
+                            <span class="category-icon" aria-hidden="true">YUM</span>
+                            <span>食物</span>
+                        </button>
+                        <button class="category-option" type="button" data-category="sports" aria-pressed="false">
+                            <span class="category-icon" aria-hidden="true">GO</span>
+                            <span>运动</span>
+                        </button>
                     </div>
                 </div>
             </div>
-            <button id="next-player-btn" class="secondary-btn" disabled>查看完毕</button>
-        </div>
 
-        <!-- 投票讨论 界面 -->
-        <div id="vote-section" class="screen hidden">
-            <h2>请开始讨论</h2>
-            <p class="instruction">讨论结束后，投票选出卧底</p>
-            <select id="killer-select">
-                <option value="">-- 请选择玩家 --</option>
-                <option value="1">1 号玩家</option>
-                <option value="2">2 号玩家</option>
-                <option value="3">3 号玩家</option>
-            </select>
-            <button id="reveal-btn" class="primary-btn">确认凶手并亮牌</button>
-        </div>
+            <button id="start-btn" class="action-btn action-btn-primary" type="button">
+                <span>开始发牌</span>
+                <span class="button-arrow" aria-hidden="true">→</span>
+            </button>
+        </section>
 
-        <!-- 结果展示 界面 -->
-        <div id="result-section" class="screen hidden">
-            <h2 id="result-message"></h2>
-            <div id="final-cards">
-                <!-- JS会填充最终牌面 -->
+        <section id="cards-section" class="screen cards-screen" aria-labelledby="player-turn" hidden>
+            <div class="round-status">
+                <div id="player-progress" class="progress-dots" aria-label="发牌进度"></div>
+                <span id="round-count">1 / 3</span>
             </div>
-            <button id="restart-btn" class="primary-btn">返回主菜单</button>
-        </div>
-    </div>
+
+            <div class="turn-heading">
+                <p class="eyebrow">轮到你了</p>
+                <h1 id="player-turn">1 号玩家</h1>
+            </div>
+
+            <div class="card-stage">
+                <button class="word-card" type="button" aria-label="点击查看词语" aria-pressed="false">
+                    <span class="card-face card-front" aria-hidden="false">
+                        <span class="card-emblem" aria-hidden="true">?</span>
+                        <span class="card-prompt">点击查看词语</span>
+                    </span>
+                    <span class="card-face card-back" aria-hidden="true">
+                        <span class="word-label">你的词语</span>
+                        <strong id="secret-word"></strong>
+                        <span class="keep-secret">记住它，别让别人看见</span>
+                    </span>
+                </button>
+            </div>
+
+            <button id="next-player-btn" class="action-btn action-btn-secondary" type="button" disabled>查看完毕</button>
+        </section>
+
+        <section id="vote-section" class="screen vote-screen" aria-labelledby="vote-title" hidden>
+            <div class="section-heading">
+                <p class="eyebrow">投票结果</p>
+                <h1 id="vote-title">你们选了谁？</h1>
+            </div>
+
+            <div id="player-votes" class="player-votes" role="radiogroup" aria-label="被票玩家">
+                <button class="player-vote" type="button" role="radio" aria-checked="false" data-player="1">
+                    <span class="player-number">01</span>
+                    <span>1 号玩家</span>
+                </button>
+                <button class="player-vote" type="button" role="radio" aria-checked="false" data-player="2">
+                    <span class="player-number">02</span>
+                    <span>2 号玩家</span>
+                </button>
+                <button class="player-vote" type="button" role="radio" aria-checked="false" data-player="3">
+                    <span class="player-number">03</span>
+                    <span>3 号玩家</span>
+                </button>
+            </div>
+
+            <button id="reveal-btn" class="action-btn action-btn-primary" type="button" disabled>
+                <span>揭晓结果</span>
+                <span class="button-arrow" aria-hidden="true">→</span>
+            </button>
+        </section>
+
+        <section id="result-section" class="screen result-screen" aria-labelledby="result-message" hidden>
+            <div id="result-symbol" class="result-symbol" aria-hidden="true"></div>
+            <p id="result-kicker" class="eyebrow"></p>
+            <h1 id="result-message"></h1>
+            <p id="result-summary" class="result-summary"></p>
+
+            <div id="final-cards" class="final-cards" aria-label="本局底牌"></div>
+
+            <div class="result-actions">
+                <button id="restart-btn" class="action-btn action-btn-primary" type="button">再来一局</button>
+                <button id="home-btn" class="text-btn" type="button">返回首页</button>
+            </div>
+        </section>
+    </main>
 
     <script src="script.js"></script>
 </body>

@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ['animation', '猪猪侠', '超人强'],
         ['animation', '大头儿子', '小头爸爸'],
         ['animation', '海绵宝宝', '派大星'],
-        ['animation', '蟹老板', '章鱼哥'],
+        ['animation', '蜡笔小新', '小白'],
         ['animation', '哆啦A梦', '大雄'],
         ['animation', '静香', '小夫'],
         ['animation', '柯南', '小兰'],
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ['campus', '直尺', '三角尺'],
         ['campus', '书包', '笔袋'],
         ['campus', '课本', '练习册'],
-        ['campus', '黑板', '白板'],
+        ['campus', '讲台', '课桌'],
         ['campus', '粉笔', '白板笔'],
         ['campus', '语文', '数学'],
         ['campus', '英语', '科学'],
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ['life', '沙发', '椅子'],
         ['life', '冰箱', '空调'],
         ['life', '电视', '电脑'],
-        ['life', '手机', '平板'],
+        ['life', '耳机', '音箱'],
         ['life', '雨伞', '雨衣'],
         ['life', '拖鞋', '运动鞋'],
         ['life', '公交车', '地铁'],
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ['nature', '松树', '柏树'],
         ['nature', '竹子', '芦苇'],
         ['nature', '玫瑰', '月季'],
-        ['nature', '云', '雾'],
+        ['nature', '太阳', '月亮'],
         ['nature', '雷', '闪电'],
         ['nature', '河流', '湖泊'],
         ['nature', '森林', '草原'],
@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ['food', '蛋糕', '面包'],
         ['food', '饼干', '薯片'],
         ['food', '牛奶', '豆浆'],
-        ['food', '可乐', '雪碧'],
+        ['food', '果汁', '酸奶'],
         ['food', '冰淇淋', '雪糕'],
         ['food', '巧克力', '糖果'],
 
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ['sports', '武术', '跆拳道'],
         ['sports', '体操', '舞蹈'],
         ['sports', '保龄球', '台球'],
-        ['sports', '金牌', '奖杯'],
+        ['sports', '冠军', '亚军'],
         ['sports', '球拍', '球棒'],
         ['sports', '泳镜', '泳帽'],
         ['sports', '短跑', '长跑']
@@ -303,6 +303,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const player = players[currentPlayerIndex];
         playerTurn.textContent = `${player.id} 号玩家`;
         secretWord.textContent = player.word;
+        secretWord.classList.toggle('is-medium', Array.from(player.word).length === 3);
+        secretWord.classList.toggle('is-long', Array.from(player.word).length >= 4);
         roundCount.textContent = `${currentPlayerIndex + 1} / 3`;
         renderProgress();
         wordCard.classList.remove('is-flipped');

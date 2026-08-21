@@ -96,6 +96,7 @@ button:focus-visible {
     transform: rotate(8deg);
 }
 
+.brand-credit,
 .brand-name,
 .brand-meta,
 .eyebrow,
@@ -104,7 +105,31 @@ button:focus-visible {
     margin: 0;
 }
 
+.brand-copy {
+    min-width: 0;
+}
+
+.brand-credit {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--coral-dark);
+    font-size: 10px;
+    font-weight: 900;
+    line-height: 1.1;
+}
+
+.brand-credit::before {
+    content: "";
+    width: 18px;
+    height: 2px;
+    flex: 0 0 auto;
+    border-radius: 2px;
+    background: var(--yellow);
+}
+
 .brand-name {
+    margin-top: 3px;
     font-size: 15px;
     font-weight: 800;
 }
@@ -411,6 +436,7 @@ h1 {
     color: var(--ink);
     background: var(--surface);
     transform: rotateY(180deg);
+    container-type: inline-size;
 }
 
 .word-label,
@@ -423,9 +449,17 @@ h1 {
 .card-back strong {
     max-width: 100%;
     margin: 18px 0;
-    font-size: clamp(34px, 10cqw, 54px);
+    font-size: clamp(42px, 24cqw, 72px);
     line-height: 1.15;
     overflow-wrap: anywhere;
+}
+
+.card-back strong.is-medium {
+    font-size: clamp(38px, 20cqw, 60px);
+}
+
+.card-back strong.is-long {
+    font-size: clamp(32px, 16cqw, 52px);
 }
 
 .vote-screen {
